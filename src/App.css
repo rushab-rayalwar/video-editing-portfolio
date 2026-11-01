@@ -1,0 +1,13 @@
+/* Shared layout helpers */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+/* Leave room at the end of the page so the last section can scroll clear of the timeline */
+.page {
+  padding-bottom: 120px;
+}

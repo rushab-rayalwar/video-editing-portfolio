@@ -1,0 +1,61 @@
+/* Design tokens: black and white, with white text in three levels of emphasis */
+:root {
+  --bg: #141416;            /* matches the studio backdrop in the portrait */
+  --bg-raised: #1c1c1f;
+  --text: #f5f5f7;          /* headlines */
+  --text-soft: #a1a1a6;     /* body copy */
+  --text-dim: #6e6e73;      /* labels and metadata */
+  --line: rgba(245, 245, 247, 0.12);
+
+  --font-display: 'Inter Tight', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --gutter: clamp(20px, 5vw, 64px);
+  --max-width: 1280px;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

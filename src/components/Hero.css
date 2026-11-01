@@ -1,0 +1,163 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: 48px;
+  padding-bottom: 120px; /* clears the timeline dock */
+  overflow: hidden;
+}
+
+/* ---------- Copy ---------- */
+.hero__copy {
+  min-width: 0;
+}
+
+.hero__eyebrow {
+  margin: 0 0 24px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  animation: fade-up 0.8s var(--ease-out) both 0.1s;
+}
+
+.hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(40px, 4.8vw, 76px);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.hero__line {
+  display: block;
+  animation: fade-up 0.9s var(--ease-out) both;
+}
+
+.hero__line--1 {
+  color: var(--text-soft);
+  font-weight: 500;
+  font-size: 0.5em;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35em;
+  animation-delay: 0.2s;
+}
+
+.hero__line--2 {
+  animation-delay: 0.45s;
+}
+
+.hero__line--3 {
+  color: var(--text-dim);
+  animation-delay: 1.5s; /* hold the shot, then cut */
+}
+
+.hero__lede {
+  max-width: 38ch;
+  margin: 28px 0 0;
+  font-size: clamp(16px, 1.3vw, 19px);
+  color: var(--text-soft);
+  animation: fade-up 0.8s var(--ease-out) both 1.8s;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  animation: fade-up 0.8s var(--ease-out) both 1.8s;
+  margin-top: 36px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 24px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 0.2s var(--ease-out), background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn--primary {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.btn--ghost {
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.btn--ghost:hover {
+  border-color: var(--text-dim);
+}
+
+/* ---------- Portrait ---------- */
+.hero__media {
+  justify-self: end;
+  width: 100%;
+  max-width: 520px;
+  animation: slide-in 1.4s var(--ease-out) both 0.15s;
+}
+
+.hero__media img {
+  width: 100%;
+  height: auto;
+  /* fade the photo's edges into the page so it has no visible box */
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 12%, #000 62%, transparent 98%),
+    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 12%, #000 62%, transparent 98%),
+    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-composite: intersect;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(40%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Phones and small tablets ---------- */
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: 24px;
+    gap: 8px;
+  }
+
+  .hero__media {
+    order: -1;
+    justify-self: center;
+    max-width: 360px;
+  }
+}
