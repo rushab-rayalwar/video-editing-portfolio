@@ -1,34 +1,33 @@
 import portrait from '../assets/rushabh.webp'
-import './Hero.css'
+import Button from './Button/Button.jsx'
+import styles from './Hero.module.css'
 
 function Hero() {
   return (
-    <section id="intro" className="hero container" aria-labelledby="hero-title">
-      <div className="hero__copy">
-        <p className="hero__eyebrow">Video editor · Photographer · Sound</p>
+    <section id="intro" className={`container ${styles.hero}`} aria-labelledby="hero-title">
+      <div className={styles.copy}>
+        <p className={styles.eyebrow}>Video editor · Photographer · Sound</p>
 
-        <h1 id="hero-title" className="hero__title">
-          <span className="hero__line hero__line--1">Hey, I&rsquo;m Rushab.</span>
-          <span className="hero__line hero__line--2">I know when to cut.</span>
+        <h1 id="hero-title" className={styles.title}>
+          <span className={`${styles.line} ${styles.lineName}`}>Hey, I&rsquo;m Rushab.</span>
+          <span className={`${styles.line} ${styles.lineSetup}`}>I know when to cut.</span>
           {/* The pause before this line is the joke: the edit holds the shot */}
-          <span className="hero__line hero__line--3">And when not to.</span>
+          <span className={`${styles.line} ${styles.linePunch}`}>And when not to.</span>
         </h1>
 
-        {/* <p className="hero__lede">
+        {/* <p className={styles.lede}>
           Music videos, brand films and reels, cut with rhythm and restraint.
         </p> */}
 
-        <div className="hero__actions">
-          <a href="#work" className="btn btn--primary">
-            View my work
-          </a>
-          <a href="#contact" className="btn btn--ghost">
+        <div className={styles.actions}>
+          <Button href="#work">View my work</Button>
+          <Button href="#contact" variant="ghost">
             Get in touch
-          </a>
+          </Button>
         </div>
       </div>
 
-      <div className="hero__media">
+      <div className={styles.media}>
         <img
           src={portrait}
           alt="Rushab smiling, wearing glasses and a white shirt"

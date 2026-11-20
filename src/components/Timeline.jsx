@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import './Timeline.css'
+import styles from './Timeline.module.css'
 
 const FPS = 25
 const TOTAL_SECONDS = 120 // the whole page plays as a two-minute "edit"
@@ -117,7 +117,7 @@ function Timeline({ sections }) {
     if (e.button !== 0) return
     draggingRef.current = true
     trackRef.current.setPointerCapture(e.pointerId)
-    trackRef.current.classList.add('is-scrubbing')
+    trackRef.current.classList.add(styles.isScrubbing)
     scrubTo(e.clientX, false)
   }
   const onPointerMove = (e) => {
@@ -125,7 +125,7 @@ function Timeline({ sections }) {
   }
   const onPointerUp = () => {
     draggingRef.current = false
-    trackRef.current?.classList.remove('is-scrubbing')
+    trackRef.current?.classList.remove(styles.isScrubbing)
   }
 
   // Keyboard users: clips are buttons that jump to their section
@@ -134,31 +134,31 @@ function Timeline({ sections }) {
   }
 
   return (
-    <nav className="timeline" aria-label="Page timeline">
-      <div className="timeline__inner">
-        <div className="timeline__meta">
-          <span className="timeline__rec" aria-hidden="true" />
-          <span className="timeline__timecode" ref={timecodeRef}>
+    <nav className={styles.timeline} aria-label="Page timeline">
+      <div className={styles.inner}>
+        <div className={styles.meta}>
+          <span className={styles.rec} aria-hidden="true" />
+          <span className={styles.timecode} ref={timecodeRef}>
             00:00:00:00
           </span>
           {/* Shown on phones, where the clips are too narrow for labels */}
-          <span className="timeline__current">{clips.find((c) => c.id === activeId)?.label}</span>
+          <span className={styles.current}>{clips.find((c) => c.id === activeId)?.label}</span>
         </div>
 
         <div
-          className="timeline__track"
+          className={styles.track}
           ref={trackRef}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
         >
-          <div className="timeline__clips">
+          <div className={styles.clips}>
             {clips.map((clip) => (
               <button
                 key={clip.id}
                 type="button"
-                className={`timeline__clip${clip.id === activeId ? ' is-active' : ''}`}
+                className={`${styles.clip} ${clip.id === activeId ? styles.isActive : ''}`}
                 style={{ left: `${clip.start * 100}%`, width: `${(clip.end - clip.start) * 100}%` }}
                 onClick={(e) => {
                   // Pointer clicks are already handled by scrubbing; this covers keyboard
@@ -166,13 +166,13 @@ function Timeline({ sections }) {
                 }}
                 aria-current={clip.id === activeId ? 'location' : undefined}
               >
-                <span className="timeline__clip-label">{clip.label}</span>
+                <span className={styles.clipLabel}>{clip.label}</span>
               </button>
             ))}
           </div>
 
-          <div className="timeline__playhead" ref={playheadRef} aria-hidden="true">
-            <span className="timeline__playhead-cap" />
+          <div className={styles.playhead} ref={playheadRef} aria-hidden="true">
+            <span className={styles.playheadCap} />
           </div>
         </div>
       </div>
