@@ -1,4 +1,5 @@
-import { parseVimeo } from '../../data/vimeo.js'
+import { useEffect, useState } from 'react'
+import { fetchVimeoThumbnail, parseVimeo } from '../../data/vimeo.js'
 import styles from './ProjectCard.module.css'
 
 function PlayIcon() {
@@ -15,9 +16,38 @@ function ProjectCard({ project, onPlay }) {
   const video = parseVimeo(project.vimeo)
   const isPortrait = project.orientation !== 'landscape'
 
+  // A `poster` set in projects.js wins; otherwise use the thumbnail chosen on Vimeo
+  const [vimeoPoster, setVimeoPoster] = useState(null)
+  const [posterLoaded, setPosterLoaded] = useState(false)
+  const videoId = video?.id
+  const videoHash = video?.hash
+
+  useEffect(() => {
+    if (project.poster || !videoId) return
+    let cancelled = false
+    fetchVimeoThumbnail({ id: videoId, hash: videoHash }, isPortrait ? 720 : 1280).then((url) => {
+      if (!cancelled) setVimeoPoster(url)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [project.poster, videoId, videoHash, isPortrait])
+
+  const poster = project.poster || vimeoPoster
+
   const frame = (
     <div className={`${styles.frame} ${isPortrait ? styles.portrait : styles.landscape}`}>
-      {project.poster && <img className={styles.poster} src={project.poster} alt="" loading="lazy" />}
+      {poster && (
+        <img
+          className={`${styles.poster} ${posterLoaded ? styles.posterLoaded : ''}`}
+          src={poster}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setPosterLoaded(true)}
+          onError={() => setVimeoPoster(null)}
+        />
+      )}
       <span className={styles.play}>
         <PlayIcon />
       </span>

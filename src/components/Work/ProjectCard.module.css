@@ -43,7 +43,27 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s var(--ease-out);
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.8s var(--ease-out);
+}
+
+.posterLoaded {
+  opacity: 1;
+}
+
+/* A soft shade over the thumbnail so the play button and tags stay readable */
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), transparent 30%, transparent 70%, rgba(0, 0, 0, 0.3));
+  pointer-events: none;
+}
+
+.play,
+.soon,
+.tag {
+  z-index: 1;
 }
 
 /* ---------- Overlays ---------- */
