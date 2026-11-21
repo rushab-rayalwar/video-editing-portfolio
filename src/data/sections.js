@@ -1,11 +1,11 @@
 // The page's sections, in order. Each one becomes a clip on the timeline.
-// These are placeholders for now: rename, reorder or remove them freely.
+// `label` is the short name shown on the timeline.
 export const sections = [
   { id: 'intro', label: 'Intro' },
-  { id: 'showreel', label: 'Showreel' },
-  { id: 'work', label: 'Work' },
-  { id: 'photography', label: 'Photography' },
-  { id: 'sound', label: 'Sound' },
+  { id: 'ai-films', label: 'AI Films' },
+  { id: 'ads', label: 'Ads' },
+  { id: 'long-form', label: 'YouTube' },
+  { id: 'stories', label: 'Stories' },
   { id: 'about', label: 'About' },
   { id: 'contact', label: 'Contact' },
 ]

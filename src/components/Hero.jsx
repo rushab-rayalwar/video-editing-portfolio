@@ -20,7 +20,7 @@ function Hero() {
         </p> */}
 
         <div className={styles.actions}>
-          <Button href="#work">View my work</Button>
+          <Button href="#ai-films">View my work</Button>
           <Button href="#contact" variant="ghost">
             Get in touch
           </Button>

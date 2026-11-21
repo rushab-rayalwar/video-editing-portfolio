@@ -1,0 +1,103 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 72px var(--gutter) 32px;
+  background: rgba(10, 10, 11, 0.86);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: fadeIn 0.35s ease both;
+}
+
+.figure {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  margin: 0;
+  max-width: 100%;
+  animation: rise 0.5s var(--ease-out) both;
+}
+
+.player {
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+  max-width: 100%;
+}
+
+.player iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Fit the video inside the screen, whichever way round it is */
+.landscape {
+  aspect-ratio: 16 / 9;
+  width: min(1200px, calc(100vw - 2 * var(--gutter)), calc((100vh - 170px) * 16 / 9));
+}
+
+.portrait {
+  aspect-ratio: 9 / 16;
+  height: min(860px, calc(100vh - 170px));
+}
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 12px;
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.meta {
+  color: var(--text-dim);
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: max(20px, var(--gutter));
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(245, 245, 247, 0.06);
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.close:hover {
+  background: rgba(245, 245, 247, 0.14);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+}

@@ -1,0 +1,92 @@
+.section {
+  padding-top: clamp(72px, 12vh, 140px);
+  padding-bottom: clamp(24px, 4vh, 48px);
+}
+
+/* ---------- Heading ---------- */
+.header {
+  display: grid;
+  gap: 10px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.index {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(36px, 5.4vw, 80px);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.description {
+  max-width: 46ch;
+  margin: 4px 0 0;
+  font-size: clamp(16px, 1.3vw, 18px);
+  color: var(--text-soft);
+}
+
+/* ---------- Lists ---------- */
+.reels,
+.wide {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.reels {
+  display: grid;
+  /* never let a reel be taller than the screen above the timeline */
+  grid-template-columns: repeat(var(--cols, 4), minmax(0, calc((100vh - 240px) * 9 / 16)));
+  justify-content: space-between;
+  gap: clamp(14px, 1.6vw, 24px);
+}
+
+.wide {
+  display: grid;
+  gap: clamp(28px, 3vw, 40px);
+}
+
+.reels + .wide {
+  margin-top: clamp(40px, 5vw, 64px);
+}
+
+/* Tablets: two or three reels across, whichever fills the rows evenly */
+@media (max-width: 1000px) {
+  .reels {
+    grid-template-columns: repeat(var(--cols-md, 2), minmax(0, 1fr));
+    justify-content: stretch;
+  }
+}
+
+/* Phones: reels become a sideways swipe row, like Instagram */
+@media (max-width: 640px) {
+  .reels {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .reels::-webkit-scrollbar {
+    display: none;
+  }
+
+  .reels > li {
+    flex: 0 0 64%;
+    scroll-snap-align: start;
+  }
+}
