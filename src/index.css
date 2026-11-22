@@ -7,6 +7,18 @@
   --text-dim: #6e6e73;      /* labels and metadata */
   --line: rgba(245, 245, 247, 0.12);
 
+  /* The one accent colour: "signal red", like a camera's record light.
+     Change it here and every red on the site follows. */
+  /* Signal Red */
+  /* --accent: #ff3b30;
+  --accent-glow: rgba(255, 59, 48, 0.6); */
+  /* Soft Crimson */
+  --accent: #e5484d;
+  --accent-glow: rgba(229, 72, 77, 0.6);
+  /* Tally Orange-Red 
+  --accent: #ff5a36;
+  --accent-glow: rgba(255, 90, 54, 0.6); */
+
   --font-display: 'Inter Tight', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-body: 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 

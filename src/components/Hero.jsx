@@ -1,5 +1,5 @@
 import portrait from '../assets/rushabh.webp'
-import Button from './Button/Button.jsx'
+// import Button from './Button/Button.jsx' // buttons are hidden for now, see below
 import styles from './Hero.module.css'
 
 function Hero() {
@@ -10,7 +10,7 @@ function Hero() {
 
         <h1 id="hero-title" className={styles.title}>
           <span className={`${styles.line} ${styles.lineName}`}>Hey, I&rsquo;m Rushab.</span>
-          <span className={`${styles.line} ${styles.lineSetup}`}>I know when to cut.</span>
+          <span className={`${styles.line} ${styles.lineSetup}`}>I know when to <span className={styles.accent}>cut.</span></span>
           {/* The pause before this line is the joke: the edit holds the shot */}
           <span className={`${styles.line} ${styles.linePunch}`}>And when not to.</span>
         </h1>
@@ -19,12 +19,13 @@ function Hero() {
           Music videos, brand films and reels, cut with rhythm and restraint.
         </p> */}
 
+        {/* Hidden for now. To bring them back, uncomment this block and the Button import above.
         <div className={styles.actions}>
           <Button href="#ai-films">View my work</Button>
           <Button href="#contact" variant="ghost">
             Get in touch
           </Button>
-        </div>
+        </div> */}
       </div>
 
       <div className={styles.media}>

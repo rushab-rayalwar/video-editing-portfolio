@@ -1,4 +1,5 @@
 import ProjectCard from './ProjectCard.jsx'
+import RecDot from '../RecDot/RecDot.jsx'
 import styles from './WorkSection.module.css'
 
 // One category of work: a heading, wide frames for landscape pieces,
@@ -13,6 +14,7 @@ function WorkSection({ category, index, onPlay }) {
       <header className={styles.header}>
         <span className={styles.index}>{String(index).padStart(2, '0')}</span>
         <h2 id={headingId} className={styles.title}>
+          <RecDot />
           {category.title}
         </h2>
         <p className={styles.description}>{category.description}</p>
@@ -27,9 +29,9 @@ function WorkSection({ category, index, onPlay }) {
             '--cols-md': portrait.length === 4 ? 2 : Math.min(portrait.length, 3),
           }}
         >
-          {portrait.map((project) => (
+          {portrait.map((project, i) => (
             <li key={project.title}>
-              <ProjectCard project={project} onPlay={onPlay} />
+              <ProjectCard project={project} onPlay={onPlay} revealOrder={i} />
             </li>
           ))}
         </ul>

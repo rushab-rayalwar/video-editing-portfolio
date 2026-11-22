@@ -57,6 +57,11 @@
   animation-delay: 1.5s; /* hold the shot, then cut */
 }
 
+/* "cut." in the accent colour */
+.accent {
+  color: var(--accent);
+}
+
 .lede {
   max-width: 38ch;
   margin: 28px 0 0;

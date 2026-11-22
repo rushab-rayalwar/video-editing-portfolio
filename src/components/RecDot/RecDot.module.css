@@ -1,0 +1,14 @@
+.dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.18em;
+  height: 0.18em;
+  margin-right: 0.3em;
+  /* lifts the dot to the middle of capital letters */
+  vertical-align: 0.26em;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0.1em 0.02em var(--accent-glow),
+    0 0 0.32em 0.04em rgba(255, 59, 48, 0.3);
+}

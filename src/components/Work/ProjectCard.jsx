@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { fetchVimeoThumbnail, parseVimeo } from '../../data/vimeo.js'
+import { useInView } from '../../hooks/useInView.js'
 import styles from './ProjectCard.module.css'
 
 function PlayIcon() {
@@ -12,7 +13,8 @@ function PlayIcon() {
 
 // A single piece of work. Plays in the full-screen player when it has a Vimeo link;
 // otherwise shows a quiet "Coming soon" frame.
-function ProjectCard({ project, onPlay }) {
+// `revealOrder` is the card's position in its row, used to stagger the reveal
+function ProjectCard({ project, onPlay, revealOrder = 0 }) {
   const video = parseVimeo(project.vimeo)
   const isPortrait = project.orientation !== 'landscape'
 
@@ -35,18 +37,28 @@ function ProjectCard({ project, onPlay }) {
 
   const poster = project.poster || vimeoPoster
 
+  // Reveal the thumbnail the first time it is both on screen and loaded:
+  // it fades in from blurred to sharp, once per visit.
+  const [frameRef, inView] = useInView()
+  const revealed = inView && posterLoaded
+
   const frame = (
-    <div className={`${styles.frame} ${isPortrait ? styles.portrait : styles.landscape}`}>
+    <div ref={frameRef} className={`${styles.frame} ${isPortrait ? styles.portrait : styles.landscape}`}>
       {poster && (
-        <img
-          className={`${styles.poster} ${posterLoaded ? styles.posterLoaded : ''}`}
-          src={poster}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          onLoad={() => setPosterLoaded(true)}
-          onError={() => setVimeoPoster(null)}
-        />
+        <div
+          className={`${styles.reveal} ${revealed ? styles.revealed : ''}`}
+          style={{ '--reveal-delay': `${Math.min(revealOrder, 5) * 90}ms` }}
+        >
+          <img
+            className={styles.poster}
+            src={poster}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            onLoad={() => setPosterLoaded(true)}
+            onError={() => setVimeoPoster(null)}
+          />
+        </div>
       )}
       <span className={styles.play}>
         <PlayIcon />
