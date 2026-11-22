@@ -53,7 +53,8 @@
 
 .wide {
   display: grid;
-  gap: clamp(28px, 3vw, 40px);
+  grid-template-columns: repeat(var(--wide-cols, 1), minmax(0, 1fr));
+  gap: clamp(20px, 2.4vw, 32px);
 }
 
 .reels + .wide {
@@ -68,8 +69,13 @@
   }
 }
 
-/* Phones: reels become a sideways swipe row, like Instagram */
+/* Phones: reels become a sideways swipe row, like Instagram,
+   and landscape videos stack one per row */
 @media (max-width: 640px) {
+  .wide {
+    grid-template-columns: 1fr;
+  }
+
   .reels {
     display: flex;
     gap: 12px;
@@ -79,6 +85,9 @@
     padding-inline: var(--gutter);
     scroll-padding-inline: var(--gutter);
     scrollbar-width: none;
+    /* extra room above and below so the thumbnails' glow isn't cut off */
+    padding-block: 24px;
+    margin-block: -24px;
   }
 
   .reels::-webkit-scrollbar {

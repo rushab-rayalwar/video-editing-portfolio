@@ -38,10 +38,14 @@ function WorkSection({ category, index, onPlay }) {
       )}
 
       {landscape.length > 0 && (
-        <ul className={styles.wide}>
-          {landscape.map((project) => (
+        <ul
+          className={styles.wide}
+          // two landscape videos sit side by side; a single one keeps the full width
+          style={{ '--wide-cols': Math.min(landscape.length, 2) }}
+        >
+          {landscape.map((project, i) => (
             <li key={project.title}>
-              <ProjectCard project={project} onPlay={onPlay} />
+              <ProjectCard project={project} onPlay={onPlay} revealOrder={i} />
             </li>
           ))}
         </ul>

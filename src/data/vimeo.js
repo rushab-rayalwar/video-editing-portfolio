@@ -50,3 +50,9 @@ export function fetchVimeoThumbnail({ id, hash }, width = 960) {
   thumbnailCache.set(key, request)
   return request
 }
+
+// The same Vimeo thumbnail at a different width (used for the small, blurred hover glow)
+export function resizeVimeoThumbnail(url, width) {
+  if (!url || !url.includes('vimeocdn.com')) return url
+  return url.replace(/_\d+(x\d+)?(?=$|\?)/, `_${width}`)
+}

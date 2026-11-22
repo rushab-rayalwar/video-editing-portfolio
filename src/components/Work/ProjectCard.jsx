@@ -1,7 +1,21 @@
-import { useEffect, useState } from 'react'
-import { fetchVimeoThumbnail, parseVimeo } from '../../data/vimeo.js'
+import { useEffect, useId, useState } from 'react'
+import { fetchVimeoThumbnail, parseVimeo, resizeVimeoThumbnail } from '../../data/vimeo.js'
 import { useInView } from '../../hooks/useInView.js'
 import styles from './ProjectCard.module.css'
+
+// How long to wait for a thumbnail before showing the card without one
+const THUMBNAIL_TIMEOUT = 2000
+// Gap between cards in the same row, so they cascade in
+const STAGGER = 90
+
+// A small circled "i", for "information"
+function InfoIcon() {
+  return (
+    <span className={styles.infoIcon} aria-hidden="true">
+      i
+    </span>
+  )
+}
 
 function PlayIcon() {
   return (
@@ -11,9 +25,17 @@ function PlayIcon() {
   )
 }
 
-// A single piece of work. Plays in the full-screen player when it has a Vimeo link;
-// otherwise shows a quiet "Coming soon" frame.
-// `revealOrder` is the card's position in its row, used to stagger the reveal
+/*
+ * A single piece of work.
+ *
+ * Nothing is shown until a quarter of the card is on screen and its thumbnail has
+ * loaded (a blinking "● REC" and a faint sweep of light show while it loads). Then
+ * the thumbnail animates into place (fade, unblur, settle), and 0.9s later the
+ * title and description follow. It all happens once per visit.
+ * Hovering a playable card lights up a soft glow made from a blurred copy of its thumbnail.
+ *
+ * `revealOrder` is the card's position in its row, used to stagger the cascade.
+ */
 function ProjectCard({ project, onPlay, revealOrder = 0 }) {
   const video = parseVimeo(project.vimeo)
   const isPortrait = project.orientation !== 'landscape'
@@ -21,6 +43,7 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
   // A `poster` set in projects.js wins; otherwise use the thumbnail chosen on Vimeo
   const [vimeoPoster, setVimeoPoster] = useState(null)
   const [posterLoaded, setPosterLoaded] = useState(false)
+  const [timedOut, setTimedOut] = useState(false)
   const videoId = video?.id
   const videoHash = video?.hash
 
@@ -37,18 +60,46 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
 
   const poster = project.poster || vimeoPoster
 
-  // Reveal the thumbnail the first time it is both on screen and loaded:
-  // it fades in from blurred to sharp, once per visit.
-  const [frameRef, inView] = useInView()
-  const revealed = inView && posterLoaded
+  const [cardRef, inView] = useInView()
+
+  // If the thumbnail is slow or missing, show the card anyway after a short wait
+  useEffect(() => {
+    if (!inView || posterLoaded) return
+    const timer = setTimeout(() => setTimedOut(true), THUMBNAIL_TIMEOUT)
+    return () => clearTimeout(timer)
+  }, [inView, posterLoaded])
+
+  // The thumbnail appears once the card is on screen and its image is ready
+  const revealed = inView && (posterLoaded || timedOut || !video)
+  // While the card is on screen but its thumbnail is still on its way, a crimson dot pulses
+  const loading = inView && !revealed
+
+  // The title and description follow the thumbnail: they animate in 0.9s after it starts revealing
+  const captionShown = revealed
+  const noteId = useId()
+  const hasNote = Boolean(project.tag && project.tagNote)
+  const delay = `${Math.min(revealOrder, 5) * STAGGER}ms`
 
   const frame = (
-    <div ref={frameRef} className={`${styles.frame} ${isPortrait ? styles.portrait : styles.landscape}`}>
-      {poster && (
-        <div
-          className={`${styles.reveal} ${revealed ? styles.revealed : ''}`}
-          style={{ '--reveal-delay': `${Math.min(revealOrder, 5) * 90}ms` }}
-        >
+    <div className={`${styles.frameWrap} ${isPortrait ? styles.portrait : styles.landscape}`}>
+      {/* While the thumbnail loads, a faint band of light sweeps across the space it will fill */}
+      {video && <span className={styles.shimmer} aria-hidden="true" />}
+
+      {/* Shown while the thumbnail loads: a blinking "● REC", like a camera's viewfinder */}
+      {video && (
+        <span className={styles.loader} aria-hidden="true">
+          <span className={styles.loaderDot} />
+          REC
+        </span>
+      )}
+
+      {/* Hover glow: a small, heavily blurred copy of the thumbnail behind the card */}
+      {video && poster && posterLoaded && (
+        <img className={styles.glow} src={resizeVimeoThumbnail(poster, 240)} alt="" aria-hidden="true" />
+      )}
+
+      <div className={styles.frame}>
+        {poster && (
           <img
             className={styles.poster}
             src={poster}
@@ -58,26 +109,48 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
             onLoad={() => setPosterLoaded(true)}
             onError={() => setVimeoPoster(null)}
           />
-        </div>
+        )}
+        <span className={styles.play}>
+          <PlayIcon />
+        </span>
+        {!video && <span className={styles.soon}>Coming soon</span>}
+      </div>
+
+      {/* Sits outside the frame so its explanation box isn't cut off at the card's edge */}
+      {project.tag && (
+        <span className={styles.tag}>
+          <InfoIcon />
+          {project.tag}
+          {hasNote && (
+            <span id={noteId} role="tooltip" className={styles.tooltip}>
+              {project.tagNote}
+            </span>
+          )}
+        </span>
       )}
-      <span className={styles.play}>
-        <PlayIcon />
-      </span>
-      {!video && <span className={styles.soon}>Coming soon</span>}
-      {project.tag && <span className={styles.tag}>{project.tag}</span>}
     </div>
   )
 
   const caption = (
-    <div className={styles.caption}>
+    <div className={`${styles.caption} ${captionShown ? styles.captionShown : ''}`}>
       <h3 className={styles.title}>{project.title}</h3>
       <p className={styles.meta}>{project.meta}</p>
     </div>
   )
 
+  const cardClass = [
+    styles.card,
+    revealed ? styles.revealed : '',
+    loading ? styles.loading : '',
+    video ? '' : styles.disabled,
+  ]
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
   if (!video) {
     return (
-      <article className={`${styles.card} ${styles.disabled}`}>
+      <article ref={cardRef} className={cardClass} style={{ '--reveal-delay': delay }}>
         {frame}
         {caption}
       </article>
@@ -85,12 +158,13 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
   }
 
   return (
-    <article className={styles.card}>
+    <article ref={cardRef} className={cardClass} style={{ '--reveal-delay': delay }}>
       <button
         type="button"
         className={styles.trigger}
         onClick={() => onPlay({ ...project, video })}
         aria-label={`Play ${project.title}`}
+        aria-describedby={hasNote ? noteId : undefined}
       >
         {frame}
       </button>

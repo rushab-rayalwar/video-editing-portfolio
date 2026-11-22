@@ -11,6 +11,7 @@
 //   orientation  'portrait' (9:16 reels) or 'landscape' (16:9)
 //   vimeo        Vimeo link, or '' for now
 //   tag          optional small label, e.g. 'In progress' or 'Mature themes'
+//   tagNote      optional explanation, shown in a small box when someone hovers the tag
 
 export const categories = [
   {
@@ -42,6 +43,7 @@ export const categories = [
         orientation: 'landscape',
         vimeo: 'https://player.vimeo.com/video/1248427219?h=1c695930bc',
         tag: 'In progress',
+        tagNote: 'This film is still being made. What you see is a work-in-progress cut.',
       },
     ],
   },
@@ -93,6 +95,7 @@ export const categories = [
         orientation: 'landscape',
         vimeo: 'https://player.vimeo.com/video/1248427218?h=97a75ee969',
         tag: 'Mature themes',
+        tagNote: "A travel vlog through Amsterdam's red-light district. No nudity, but adult themes and signage.",
       },
     ],
   },

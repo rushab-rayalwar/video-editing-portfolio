@@ -1,4 +1,14 @@
+/*
+ * Timing of the card's entrance (all after the card's stagger delay):
+ *   thumbnail:    when the card is on screen and the image has loaded,
+ *                 0s → ~1.2s: fade in, unblur, settle from a slight zoom
+ *   title:        0.9s after the thumbnail starts revealing: fade in and rise
+ *   description:  0.12s after the title
+ */
 .card {
+  --thumb-duration: 1.1s;
+  --caption-start: 0.9s;
+
   display: grid;
   gap: 14px;
 }
@@ -14,19 +24,17 @@
   border-radius: 20px;
 }
 
+.trigger:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+}
+
 /* ---------- Frame ---------- */
-.frame {
+
+/* Holds the card's space on the page (so nothing jumps) and the hover glow */
+.frameWrap {
   position: relative;
-  display: grid;
-  place-items: center;
   width: 100%;
-  overflow: hidden;
-  border-radius: 20px;
-  border: 1px solid var(--line);
-  background:
-    radial-gradient(120% 80% at 50% 0%, rgba(245, 245, 247, 0.06), transparent 60%),
-    var(--bg-raised);
-  transition: transform 0.5s var(--ease-out), border-color 0.3s ease;
 }
 
 .portrait {
@@ -35,6 +43,36 @@
 
 .landscape {
   aspect-ratio: 16 / 9;
+}
+
+/* The visible card. Hidden, blurred and zoomed in until it is revealed. */
+.frame {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 20px;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(245, 245, 247, 0.06), transparent 60%),
+    var(--bg-raised);
+  /* border: 1px solid var(--line); */
+
+  opacity: 0;
+  filter: blur(18px);
+  transform: scale(1.08);
+  transition:
+    opacity 0.9s ease,
+    filter var(--thumb-duration) var(--ease-out),
+    transform 1.3s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.revealed .frame {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
 }
 
 .poster {
@@ -46,38 +84,6 @@
   transition: transform 0.8s var(--ease-out);
 }
 
-/*
- * Thumbnail reveal: starts invisible, blurred and slightly zoomed in, then
- * settles into place. It sits on a wrapper so the stagger delay never slows
- * down the thumbnail's hover zoom.
- */
-.reveal {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  filter: blur(18px);
-  transform: scale(1.08);
-  transition:
-    opacity 0.9s ease,
-    filter 1.1s var(--ease-out),
-    transform 1.3s var(--ease-out);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-
-.revealed {
-  opacity: 1;
-  filter: blur(0);
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    filter: none;
-    transform: none;
-    transition-delay: 0ms;
-  }
-}
-
 /* A soft shade over the thumbnail so the play button and tags stay readable */
 .frame::after {
   content: '';
@@ -87,15 +93,169 @@
   pointer-events: none;
 }
 
-.play,
-.soon,
-.tag {
+/* ---------- Loading shimmer ---------- */
+/*
+ * No visible frame while loading: just a wide, very faint band of light that
+ * sweeps diagonally (top-left to bottom-right) across the area the video will
+ * fill, then pauses briefly. One cycle = 2.8s sweep + 0.4s pause.
+ */
+.shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /*
+   * A large diagonal band of light, drawn on a background three times the
+   * card's size. Sliding that background moves the band from the top-left
+   * corner to the bottom-right; it fades to nothing on both sides, so it has
+   * no visible edges.
+   */
+  background: linear-gradient(
+    135deg,
+    transparent 35%,
+    rgba(245, 245, 247, 0.025) 43%,
+    rgba(245, 245, 247, 0.07) 50%,
+    rgba(245, 245, 247, 0.025) 57%,
+    transparent 65%
+  );
+  background-size: 300% 300%;
+  background-position: 100% 100%;
+}
+
+.loading .shimmer {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+/* One cycle = 2.8s sweep + 0.4s pause */
+.loading .shimmer::before {
+  animation: shimmerSweep 3.2s ease-in-out infinite;
+  /* cards in a row sweep one after another, so the light ripples across */
+  animation-delay: calc(var(--reveal-delay, 0ms) * 2);
+}
+
+@keyframes shimmerSweep {
+  0% {
+    /* band just outside the top-left corner */
+    background-position: 100% 100%;
+  }
+  87.5% {
+    /* 2.8s in: the band has passed the bottom-right corner */
+    background-position: 0% 0%;
+  }
+  100% {
+    /* 0.4s pause, out of sight, before the next sweep */
+    background-position: 0% 0%;
+  }
+}
+
+/* ---------- Loading indicator: "● REC" ---------- */
+/* Sits where the thumbnail will appear; only shown if loading takes a moment */
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.loaderDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 4px 1px var(--accent-glow);
+}
+
+.loading .loader {
+  opacity: 1;
+  /* wait a moment, so a quick load never flashes it */
+  transition-delay: 0.3s;
+}
+
+/* the dot blinks at the same rhythm as the timeline's record light */
+.loading .loaderDot {
+  animation: recBlink 1.6s ease-in-out infinite;
+}
+
+@keyframes recBlink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* ---------- Hover glow ---------- */
+.glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  filter: blur(32px) saturate(1.3);
+  transform: scale(1.02);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s var(--ease-out);
+}
+
+.trigger:hover .glow,
+.trigger:focus-visible .glow {
+  opacity: 0.3;
+  transform: scale(1.06);
+}
+
+/* No glow before the card has appeared */
+.card:not(.revealed) .glow {
+  visibility: hidden;
+}
+
+/*
+ * Touch screens have no hover, so every thumbnail gets a faint glow of its own,
+ * fading in just after the thumbnail lands.
+ */
+@media (hover: none) {
+  .revealed .glow {
+    opacity: 0.16;
+    transform: scale(1.03);
+    transition-delay: calc(var(--reveal-delay, 0ms) + 0.8s);
+  }
+
+  .trigger:hover .glow,
+  .trigger:focus-visible .glow {
+    opacity: 0.16;
+    transform: scale(1.03);
+  }
 }
 
 /* ---------- Overlays ---------- */
 .play {
   position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   width: 56px;
@@ -117,6 +277,7 @@
 
 .soon {
   position: absolute;
+  z-index: 1;
   bottom: 16px;
   left: 0;
   right: 0;
@@ -128,25 +289,114 @@
   color: var(--text-dim);
 }
 
+/*
+ * Content tags ("In progress", "Mature themes"): warm beige so they read as a
+ * heads-up, with a circled "i" for information. Hovering one shows a short explanation underneath.
+ */
 .tag {
+  --tag-tone: 236, 211, 160; /* warm beige, as r, g, b */
+
   position: absolute;
+  z-index: 2;
   top: 14px;
   left: 14px;
-  padding: 5px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 8px;
   border-radius: 999px;
-  border: 1px solid rgba(245, 245, 247, 0.16);
-  background: rgba(20, 20, 22, 0.55);
+  border: 1px solid rgba(var(--tag-tone), 0.38);
+  background: rgba(40, 33, 22, 0.62);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   font-size: 12px;
   font-weight: 500;
-  color: var(--text-soft);
+  color: rgb(var(--tag-tone));
+  line-height: 1.2;
+  cursor: help;
+
+  /* arrives a moment after the thumbnail */
+  opacity: 0;
+  transition: opacity 0.6s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition-delay: calc(var(--reveal-delay, 0ms) + 0.5s), 0s, 0s;
 }
 
-/* ---------- Caption ---------- */
+.revealed .tag {
+  opacity: 1;
+}
+
+.infoIcon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.4px solid currentColor;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1;
+}
+
+.tag:hover {
+  background: rgba(58, 47, 30, 0.78);
+  border-color: rgba(var(--tag-tone), 0.6);
+}
+
+/* The explanation box */
+.tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: max-content;
+  max-width: min(240px, 70vw);
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--tag-tone), 0.25);
+  background: rgba(24, 22, 19, 0.94);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  color: var(--text-soft);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+  pointer-events: none;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s var(--ease-out),
+    visibility 0s linear 0.25s;
+}
+
+.tag:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s var(--ease-out),
+    visibility 0s;
+}
+
+/* ---------- Caption: follows 0.9s after the thumbnail starts revealing ---------- */
 .caption {
   display: grid;
   gap: 2px;
+}
+
+.title,
+.meta {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.7s var(--ease-out);
 }
 
 .title {
@@ -156,18 +406,28 @@
   font-size: clamp(17px, 1.4vw, 20px);
   letter-spacing: -0.02em;
   line-height: 1.25;
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--caption-start));
 }
 
 .meta {
   margin: 0;
   font-size: 14px;
   color: var(--text-dim);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--caption-start) + 0.12s);
 }
 
-/* ---------- States ---------- */
+.captionShown .title,
+.captionShown .meta {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Hover ---------- */
+/* Hover border, hidden along with the frame border above
 .trigger:hover .frame {
   border-color: rgba(245, 245, 247, 0.24);
 }
+*/
 
 .trigger:hover .poster {
   transform: scale(1.04);
@@ -179,11 +439,27 @@
   color: var(--bg);
 }
 
-.trigger:focus-visible {
-  outline: 2px solid var(--text);
-  outline-offset: 4px;
-}
-
 .disabled .play {
   opacity: 0.4;
+}
+
+/* ---------- Reduced motion: things simply appear ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .loading .loaderDot {
+    animation: none;
+  }
+
+  /* instead of a moving sweep, a still and very faint tint of the shape */
+  .loading .shimmer::before {
+    animation: none;
+    background: rgba(245, 245, 247, 0.03);
+  }
+
+  .frame,
+  .title,
+  .meta {
+    filter: none;
+    transform: none;
+    transition-delay: 0ms;
+  }
 }

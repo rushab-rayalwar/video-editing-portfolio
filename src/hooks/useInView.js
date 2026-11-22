@@ -11,7 +11,8 @@ import { useEffect, useRef, useState } from 'react'
  *   const [ref, inView] = useInView()
  *   <div ref={ref} className={inView ? 'shown' : ''} />
  */
-export function useInView({ threshold = 0.25, rootMargin = '0px 0px -8% 0px', once = true } = {}) {
+// threshold 0.25: fires once a quarter of the element is inside the viewport
+export function useInView({ threshold = 0.25, rootMargin = '0px', once = true } = {}) {
   const ref = useRef(null)
   // Very old browsers without Intersection Observer just show everything
   const [inView, setInView] = useState(() => typeof window !== 'undefined' && !('IntersectionObserver' in window))

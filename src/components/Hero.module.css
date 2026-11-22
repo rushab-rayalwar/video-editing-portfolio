@@ -1,4 +1,12 @@
+/*
+ * Intro sequence: everything enters on one even beat (--step), with the same
+ * duration and easing, so it reads as one smooth cascade:
+ *   photo 0 → eyebrow 1 → "Hey, I'm Rushab." 2 → "I know when to cut." 3
+ *   → "And when not to." 4 → timeline 5 (set in Timeline.module.css)
+ */
 .hero {
+  --step: 0.2s;
+  --enter: 0.9s;
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   align-items: center;
@@ -22,7 +30,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-dim);
-  animation: fadeUp 0.8s var(--ease-out) both 0.1s;
+  animation: fadeUp var(--enter) var(--ease-out) both calc(var(--step) * 1);
 }
 
 .title {
@@ -36,7 +44,7 @@
 
 .line {
   display: block;
-  animation: fadeUp 0.9s var(--ease-out) both;
+  animation: fadeUp var(--enter) var(--ease-out) both;
 }
 
 .lineName {
@@ -45,21 +53,27 @@
   font-size: 0.5em;
   letter-spacing: -0.03em;
   margin-bottom: 0.35em;
-  animation-delay: 0.2s;
+  animation-delay: calc(var(--step) * 2);
 }
 
 .lineSetup {
-  animation-delay: 0.45s;
+  animation-delay: calc(var(--step) * 3);
+  /* a soft glow around "I know when to cut." */
+  text-shadow: 0 0 28px rgba(245, 245, 247, 0.18);
 }
 
 .linePunch {
   color: var(--text-dim);
-  animation-delay: 1.5s; /* hold the shot, then cut */
+  animation-delay: calc(var(--step) * 4);
 }
 
 /* "cut." in the accent colour */
 .accent {
   color: var(--accent);
+  /* "cut." glows in its own colour */
+  text-shadow:
+    0 0 12px rgba(229, 72, 77, 0.35),
+    0 0 30px rgba(229, 72, 77, 0.12);
 }
 
 .lede {
@@ -67,14 +81,14 @@
   margin: 28px 0 0;
   font-size: clamp(16px, 1.3vw, 19px);
   color: var(--text-soft);
-  animation: fadeUp 0.8s var(--ease-out) both 1.8s;
+  animation: fadeUp var(--enter) var(--ease-out) both calc(var(--step) * 5);
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  animation: fadeUp 0.8s var(--ease-out) both 1.8s;
+  animation: fadeUp var(--enter) var(--ease-out) both calc(var(--step) * 5);
   margin-top: 36px;
 }
 
@@ -83,7 +97,7 @@
   justify-self: end;
   width: 100%;
   max-width: 520px;
-  animation: slideIn 1.4s var(--ease-out) both 0.15s;
+  animation: slideIn 1.3s var(--ease-out) both;
 }
 
 .media img {
