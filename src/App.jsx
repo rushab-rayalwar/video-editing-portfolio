@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 // import Navbar from './components/Navbar.jsx'
+import TopLinks from './components/TopLinks/TopLinks.jsx'
 import Hero from './components/Hero.jsx'
 import WorkSection from './components/Work/WorkSection.jsx'
 import PlaceholderSection from './components/PlaceholderSection.jsx'
@@ -16,6 +17,7 @@ function App() {
   return (
     <>
       {/* <Navbar /> */}
+      <TopLinks />
       <main className="page">
         <Hero />
 

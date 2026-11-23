@@ -30,8 +30,10 @@ function PlayIcon() {
  *
  * Nothing is shown until a quarter of the card is on screen and its thumbnail has
  * loaded (a blinking "● REC" and a faint sweep of light show while it loads). Then
- * the thumbnail animates into place (fade, unblur, settle), and 0.9s later the
- * title and description follow. It all happens once per visit.
+ * the thumbnail animates into place (fade, unblur, settle). The title animates in
+ * once it is fully on screen (clear of the timeline): straight away if its thumbnail
+ * has already loaded, otherwise 0.5s after the thumbnail loads. The description
+ * follows just after. It all happens once per visit.
  * Hovering a playable card lights up a soft glow made from a blurred copy of its thumbnail.
  *
  * `revealOrder` is the card's position in its row, used to stagger the cascade.
@@ -44,6 +46,9 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
   const [vimeoPoster, setVimeoPoster] = useState(null)
   const [posterLoaded, setPosterLoaded] = useState(false)
   const [timedOut, setTimedOut] = useState(false)
+  // When the thumbnail became ready (loaded, or the fallback gave up waiting)
+  const [readyAt, setReadyAt] = useState(null)
+  const markReady = () => setReadyAt((at) => at ?? performance.now())
   const videoId = video?.id
   const videoHash = video?.hash
 
@@ -65,17 +70,29 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
   // If the thumbnail is slow or missing, show the card anyway after a short wait
   useEffect(() => {
     if (!inView || posterLoaded) return
-    const timer = setTimeout(() => setTimedOut(true), THUMBNAIL_TIMEOUT)
+    const timer = setTimeout(() => {
+      setTimedOut(true)
+      setReadyAt((at) => at ?? performance.now())
+    }, THUMBNAIL_TIMEOUT)
     return () => clearTimeout(timer)
   }, [inView, posterLoaded])
 
   // The thumbnail appears once the card is on screen and its image is ready
   const revealed = inView && (posterLoaded || timedOut || !video)
-  // While the card is on screen but its thumbnail is still on its way, a crimson dot pulses
+  // While the card is on screen but its thumbnail is still on its way, "● REC" and the shimmer show
   const loading = inView && !revealed
 
-  // The title and description follow the thumbnail: they animate in 0.9s after it starts revealing
-  const captionShown = revealed
+  // The title animates once the whole title is on screen (clear of the timeline dock)
+  // and its thumbnail is ready:
+  //   - thumbnail already loaded when the title comes into view: straight away
+  //   - title in view first: 0.5s after the thumbnail loads (or the fallback gives up)
+  // so a fast scroll never leaves names lagging behind.
+  const [titleRef, titleVisible, titleSeenAt] = useInView({ threshold: 1, clearOfTimeline: true })
+  const thumbnailReady = posterLoaded || timedOut || !video
+  const captionShown = titleVisible && thumbnailReady
+  const thumbnailReadyAt = video ? readyAt : 0
+  const captionInstant =
+    captionShown && thumbnailReadyAt !== null && titleSeenAt !== null && thumbnailReadyAt <= titleSeenAt
   const noteId = useId()
   const hasNote = Boolean(project.tag && project.tagNote)
   const delay = `${Math.min(revealOrder, 5) * STAGGER}ms`
@@ -106,7 +123,10 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
             alt=""
             loading="lazy"
             decoding="async"
-            onLoad={() => setPosterLoaded(true)}
+            onLoad={() => {
+              setPosterLoaded(true)
+              markReady()
+            }}
             onError={() => setVimeoPoster(null)}
           />
         )}
@@ -132,8 +152,14 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
   )
 
   const caption = (
-    <div className={`${styles.caption} ${captionShown ? styles.captionShown : ''}`}>
-      <h3 className={styles.title}>{project.title}</h3>
+    <div
+      className={[styles.caption, captionShown ? styles.captionShown : '', captionInstant ? styles.captionInstant : '']
+        .join(' ')
+        .trim()}
+    >
+      <h3 ref={titleRef} className={styles.title}>
+        {project.title}
+      </h3>
       <p className={styles.meta}>{project.meta}</p>
     </div>
   )

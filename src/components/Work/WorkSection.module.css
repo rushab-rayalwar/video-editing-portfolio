@@ -1,6 +1,14 @@
 .section {
-  padding-top: clamp(72px, 12vh, 140px);
-  padding-bottom: clamp(24px, 4vh, 48px);
+  position: relative;
+  /* equal space above and below, so each divider sits midway between categories
+     (was clamp(72px, 12vh, 140px) above and clamp(24px, 4vh, 48px) below) */
+  padding-top: clamp(56px, 8vh, 96px);
+  padding-bottom: clamp(56px, 8vh, 96px);
+}
+
+/* The first category sits closer to the intro */
+.first {
+  padding-top: clamp(16px, 3vh, 32px);
 }
 
 /* ---------- Heading ---------- */
@@ -22,9 +30,11 @@
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(36px, 5.4vw, 80px);
-  line-height: 1;
-  letter-spacing: -0.045em;
+  /* was clamp(36px, 5.4vw, 80px) */
+  font-size: clamp(32px, 3.8vw, 56px);
+  line-height: 1.05;
+  /* was -0.045em: a touch more open */
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
@@ -33,6 +43,67 @@
   margin: 4px 0 0;
   font-size: clamp(16px, 1.3vw, 18px);
   color: var(--text-soft);
+}
+
+/*
+ * Heading reveal: the number, heading text and description start blurred and
+ * slightly low, then sharpen into place one after another (number first,
+ * heading 0.1s later, description 0.12s after the heading). The red dot
+ * before the heading doesn't animate; it's there from the start.
+ */
+/* Dot and text sit side by side; the dot lines up with the first line of text,
+   so it stays next to the heading even when the heading wraps on a phone */
+.title {
+  display: flex;
+  align-items: flex-start;
+}
+
+.title > span:first-child {
+  /* centre the dot on the first line: (line height - dot size) / 2 */
+  margin-top: 0.435em;
+}
+
+.titleText {
+  display: block;
+  min-width: 0;
+}
+
+.index,
+.titleText,
+.description {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(8px);
+  transition:
+    opacity 0.7s ease,
+    filter 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+}
+
+.headerRevealed .index,
+.headerRevealed .titleText,
+.headerRevealed .description {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+.headerRevealed .titleText {
+  transition-delay: 0.1s;
+}
+
+.headerRevealed .description {
+  transition-delay: 0.22s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .index,
+  .titleText,
+  .description {
+    filter: none;
+    transform: none;
+    transition-delay: 0s !important;
+  }
 }
 
 /* ---------- Lists ---------- */
@@ -55,6 +126,16 @@
   display: grid;
   grid-template-columns: repeat(var(--wide-cols, 1), minmax(0, 1fr));
   gap: clamp(20px, 2.4vw, 32px);
+}
+
+/*
+ * TRIAL: rows of exactly three reels (AI Films, Stories) fill the full width
+ * with small gaps, so each reel is taller. Delete this rule to go back.
+ */
+.reels.reelsThree {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-content: stretch;
+  gap: clamp(12px, 1.2vw, 18px);
 }
 
 .reels + .wide {

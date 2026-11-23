@@ -1,0 +1,105 @@
+/*
+ * A small frosted pill in the same style as the timeline dock, centred just
+ * above it. Only the arrow moves; the pill itself stays still.
+ */
+.hint {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 16px;
+  border: 1px solid rgba(245, 245, 247, 0.1);
+  border-radius: 999px;
+  background: rgba(28, 28, 31, 0.8);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  color: var(--text);
+  font: 500 13px/1 var(--font-body);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translateX(-50%);
+  /* a slow fade that also sharpens from a blur (was 0.7s, no blur) */
+  animation: hintIn 1.8s ease-in-out both;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.hint:hover {
+  background: rgba(40, 40, 44, 0.9);
+  border-color: rgba(245, 245, 247, 0.2);
+}
+
+.hint:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+/* the arrow drifts gently downwards and back */
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  animation: drift 2.4s ease-in-out infinite;
+}
+
+.arrow svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* on the first scroll, it slides down into the timeline and fades away */
+.leaving {
+  animation: hintOut 0.45s ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes hintIn {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes hintOut {
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(14px);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(-1px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow {
+    animation: none;
+  }
+
+  .hint {
+    animation-name: hintFade;
+  }
+}
+
+@keyframes hintFade {
+  from {
+    opacity: 0;
+  }
+}

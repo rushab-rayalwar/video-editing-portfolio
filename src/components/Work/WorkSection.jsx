@@ -1,5 +1,6 @@
 import ProjectCard from './ProjectCard.jsx'
 import RecDot from '../RecDot/RecDot.jsx'
+import { useInView } from '../../hooks/useInView.js'
 import styles from './WorkSection.module.css'
 
 // One category of work: a heading, wide frames for landscape pieces,
@@ -9,20 +10,30 @@ function WorkSection({ category, index, onPlay }) {
   const portrait = category.projects.filter((p) => p.orientation !== 'landscape')
   const headingId = `${category.id}-title`
 
+  // Number, heading and description blur into view (in that order) once the whole
+  // heading is on screen and clear of the timeline dock. Happens once.
+  const [headingRef, headingVisible] = useInView({ threshold: 1, clearOfTimeline: true })
+
   return (
-    <section id={category.id} className={`container ${styles.section}`} aria-labelledby={headingId}>
-      <header className={styles.header}>
+    <section
+      id={category.id}
+      className={`container ${styles.section} ${index === 1 ? styles.first : ''}`}
+      aria-labelledby={headingId}
+    >
+      <header className={`${styles.header} ${headingVisible ? styles.headerRevealed : ''}`}>
         <span className={styles.index}>{String(index).padStart(2, '0')}</span>
-        <h2 id={headingId} className={styles.title}>
+        <h2 ref={headingRef} id={headingId} className={styles.title}>
+          {/* the dot is always visible; only the text blurs into view */}
           <RecDot />
-          {category.title}
+          <span className={styles.titleText}>{category.title}</span>
         </h2>
         <p className={styles.description}>{category.description}</p>
       </header>
 
       {portrait.length > 0 && (
         <ul
-          className={styles.reels}
+          // TRIAL: rows of three reels fill the width, so the reels are taller
+          className={`${styles.reels} ${portrait.length === 3 ? styles.reelsThree : ''}`}
           style={{
             // as many columns as there are reels (up to 4), so a row is never left half empty
             '--cols': Math.min(portrait.length, 4),

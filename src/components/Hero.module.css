@@ -11,10 +11,12 @@
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   align-items: center;
   gap: clamp(24px, 4vw, 64px);
-  min-height: 100vh;
-  min-height: 100svh;
+  /* a little shorter than the screen, so less empty space before AI Films
+     (was 100vh / 100svh, with 120px of bottom padding) */
+  min-height: calc(100vh - 48px);
+  min-height: calc(100svh - 48px);
   padding-top: 48px;
-  padding-bottom: 120px; /* clears the timeline dock */
+  padding-bottom: 72px; /* still clears the timeline dock */
   overflow: hidden;
 }
 

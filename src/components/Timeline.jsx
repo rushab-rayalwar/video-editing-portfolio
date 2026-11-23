@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import ScrollHint from './ScrollHint/ScrollHint.jsx'
 import styles from './Timeline.module.css'
 
 const FPS = 25
@@ -106,7 +107,9 @@ function Timeline({ sections }) {
     }
   }, [measure, update])
 
-  // Scrub: click or drag anywhere on the track to jump the page
+  // Scrub: click or drag anywhere on the dock (except the timecode), or grab the
+  // playhead itself, to move through the page. The horizontal position is read
+  // against the clip track, so a click above or below the clips lands at that spot.
   const scrubTo = (clientX, smooth) => {
     const rect = trackRef.current.getBoundingClientRect()
     const progress = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width))
@@ -115,8 +118,10 @@ function Timeline({ sections }) {
 
   const onPointerDown = (e) => {
     if (e.button !== 0) return
+    // The timecode area on the left stays unclickable
+    if (e.target.closest(`.${styles.meta}`)) return
     draggingRef.current = true
-    trackRef.current.setPointerCapture(e.pointerId)
+    e.currentTarget.setPointerCapture(e.pointerId)
     trackRef.current.classList.add(styles.isScrubbing)
     scrubTo(e.clientX, false)
   }
@@ -135,7 +140,16 @@ function Timeline({ sections }) {
 
   return (
     <nav className={styles.timeline} aria-label="Page timeline">
-      <div className={styles.inner}>
+      {/* "See my work" hint, sitting just above the dock until the first scroll */}
+      <ScrollHint targetId={sections[1]?.id} />
+
+      <div
+        className={styles.inner}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
         <div className={styles.meta}>
           <span className={styles.rec} aria-hidden="true" />
           <span className={styles.timecode} ref={timecodeRef}>
@@ -145,14 +159,7 @@ function Timeline({ sections }) {
           <span className={styles.current}>{clips.find((c) => c.id === activeId)?.label}</span>
         </div>
 
-        <div
-          className={styles.track}
-          ref={trackRef}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-        >
+        <div className={styles.track} ref={trackRef}>
           <div className={styles.clips}>
             {clips.map((clip) => (
               <button

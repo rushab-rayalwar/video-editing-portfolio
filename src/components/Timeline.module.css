@@ -16,7 +16,8 @@
   gap: 16px;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 10px 14px;
+  /* was 10px 14px */
+  padding: 7px 12px;
   border-radius: 18px;
   border: 1px solid rgba(245, 245, 247, 0.1);
   /* background: rgba(28, 28, 31, 0.42); */
@@ -28,6 +29,11 @@
     0 12px 40px rgba(0, 0, 0, 0.35);
   /* enters as the 5th beat of the intro (0.2s steps, see Hero.module.css) */
   animation: dockIn 0.9s var(--ease-out) both 1s;
+
+  /* the whole dock (apart from the timecode) works as a scrubber */
+  cursor: ew-resize;
+  touch-action: none;
+  user-select: none;
 }
 
 /* Browsers without backdrop blur get a more solid panel so text stays readable */
@@ -46,6 +52,7 @@
 
 /* ---------- Timecode ---------- */
 .meta {
+  cursor: default;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -90,10 +97,8 @@
 .track {
   position: relative;
   flex: 1;
-  height: 34px;
-  cursor: ew-resize;
-  touch-action: none;
-  user-select: none;
+  /* was 34px */
+  height: 28px;
 }
 
 .clips {
@@ -140,15 +145,32 @@
 /* ---------- Playhead ---------- */
 .playhead {
   position: absolute;
-  top: -12px;
-  bottom: -6px;
+  /* reaches just above the slimmer dock, as before */
+  top: -9px;
+  bottom: -5px;
   left: 0;
   width: 2px;
   margin-left: -1px;
   background: var(--accent);
   border-radius: 1px;
-  pointer-events: none;
   box-shadow: 0 0 10px var(--accent-glow);
+  /* the whole playhead (line, triangle and its top) can be grabbed and dragged */
+  cursor: grab;
+}
+
+/* An invisible, wider grab area around the playhead, so it's easy to catch */
+.playhead::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  left: 50%;
+  width: 24px;
+  transform: translateX(-50%);
+}
+
+.track.isScrubbing .playhead {
+  cursor: grabbing;
 }
 
 .playheadCap {
@@ -174,7 +196,7 @@
   }
   .inner {
     gap: 10px;
-    padding: 8px 10px;
+    padding: 6px 10px;
   }
   .timecode {
     font-size: 12px;
@@ -184,7 +206,7 @@
     height: 6px;
   }
   .track {
-    height: 28px;
+    height: 24px;
   }
   /* record dot and timecode on one line, current section name underneath */
   .meta {
