@@ -2,8 +2,8 @@
 // `label` is the short name shown on the timeline.
 export const sections = [
   { id: 'intro', label: 'Intro' },
-  { id: 'ai-films', label: 'AI Films' },
-  { id: 'ads', label: 'Ads' },
+  { id: 'ai-films', label: 'AI Ads' },
+  { id: 'ads', label: 'Promos' },
   { id: 'long-form', label: 'YouTube' },
   { id: 'stories', label: 'Stories' },
   { id: 'about', label: 'About' },

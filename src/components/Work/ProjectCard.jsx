@@ -11,9 +11,11 @@ const STAGGER = 90
 // A small circled "i", for "information"
 function InfoIcon() {
   return (
-    <span className={styles.infoIcon} aria-hidden="true">
-      i
-    </span>
+    <svg className={styles.infoIcon} viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="6.6" fill="none" stroke="currentColor" strokeWidth="1.3" />
+      <circle cx="8" cy="5.1" r="0.95" fill="currentColor" />
+      <path d="M8 7.4v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
   )
 }
 
@@ -135,6 +137,16 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
         </span>
         {!video && <span className={styles.soon}>Coming soon</span>}
       </div>
+
+      {/* Small "AI" badge, top right, for work made with generative AI */}
+      {project.ai && (
+        <span className={styles.aiTag} aria-label="Made with generative AI">
+          AI
+          <span role="tooltip" aria-hidden="true" className={styles.tooltip}>
+            Made with generative AI.
+          </span>
+        </span>
+      )}
 
       {/* Sits outside the frame so its explanation box isn't cut off at the card's edge */}
       {project.tag && (

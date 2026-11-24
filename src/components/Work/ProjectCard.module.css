@@ -329,7 +329,7 @@
   font-weight: 500;
   color: rgb(var(--tag-tone));
   line-height: 1.2;
-  cursor: help;
+  cursor: default;
 
   /* arrives a moment after the thumbnail */
   opacity: 0;
@@ -342,23 +342,57 @@
 }
 
 .infoIcon {
-  display: grid;
-  place-items: center;
+  display: block;
   flex-shrink: 0;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  border: 1.4px solid currentColor;
-  font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 700;
-  font-style: normal;
-  line-height: 1;
+  width: 14px;
+  height: 14px;
+  opacity: 0.9;
 }
 
 .tag:hover {
   background: rgba(58, 47, 30, 0.78);
   border-color: rgba(var(--tag-tone), 0.6);
+}
+
+/* "AI" badge: a quiet frosted-white pill in the top-right corner */
+.aiTag {
+  --tag-tone: 245, 245, 247;
+
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--tag-tone), 0.16);
+  background: rgba(20, 20, 22, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(var(--tag-tone), 0.7);
+  line-height: 1.2;
+  cursor: default;
+
+  opacity: 0;
+  transition: opacity 0.6s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition-delay: calc(var(--reveal-delay, 0ms) + 0.5s), 0s, 0s;
+}
+
+.revealed .aiTag {
+  opacity: 1;
+}
+
+.aiTag:hover {
+  background: rgba(20, 20, 22, 0.4);
+  border-color: rgba(var(--tag-tone), 0.3);
+}
+
+.aiTag .tooltip {
+  left: auto;
+  right: 0;
+  letter-spacing: normal;
 }
 
 /* The explanation box */
@@ -390,7 +424,8 @@
     visibility 0s linear 0.25s;
 }
 
-.tag:hover .tooltip {
+.tag:hover .tooltip,
+.aiTag:hover .tooltip {
   opacity: 1;
   visibility: visible;
   transform: none;

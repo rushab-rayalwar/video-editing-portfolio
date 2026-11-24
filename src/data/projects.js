@@ -12,36 +12,41 @@
 //   vimeo        Vimeo link, or '' for now
 //   tag          optional small label, e.g. 'In progress' or 'Mature themes'
 //   tagNote      optional explanation, shown in a small box when someone hovers the tag
+//   ai           true if it was made with generative AI; shows a small "AI" badge
 
 export const categories = [
   {
     id: 'ai-films',
-    title: 'AI Films',
-    description: 'Ads written, directed and edited entirely with generative AI.',
+    title: 'AI Ad Films',
+    description: 'Brand stories written, directed and edited with generative AI.',
     projects: [
       {
         title: 'Weight Loss Without Guidance',
         meta: 'Aiqa · Reel · Direction, edit',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248314092?h=5f19195c20',
+        ai: true,
       },
       {
         title: 'Scale Sirf Number Batata Hai',
         meta: 'Aiqa · Reel · Direction, edit',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248424351?h=b8dd96406b',
+        ai: true,
       },
       {
         title: 'Monster Advisor',
         meta: 'Aiqa · Reel · Direction, edit',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248422488?h=075c51be06',
+        ai: true,
       },
       {
         title: 'Pidilite: Adhesive vs. Water',
         meta: 'Ad film · Direction, edit, continuity',
         orientation: 'landscape',
         vimeo: 'https://player.vimeo.com/video/1248427219?h=1c695930bc',
+        ai: true,
         tag: 'In progress',
         tagNote: 'This film is still being made. What you see is a work-in-progress cut.',
       },
@@ -49,8 +54,8 @@ export const categories = [
   },
   {
     id: 'ads',
-    title: 'Ads & Brand Films',
-    description: 'Short, sharp ads for brands and the people behind them.',
+    title: 'Promo & Explainer Ads',
+    description: 'Short, sharp ads that sell, explain and stick.',
     projects: [
       {
         title: 'Guitar Lessons with Rohan',
@@ -69,12 +74,14 @@ export const categories = [
         meta: 'Aiqa · Reel · Motion graphics',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248823342?h=22ec932d39',
+        ai: true,
       },
       {
         title: 'Obesity Crisis',
         meta: 'Aiqa · Reel · Motion graphics',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248317095?h=6ea19fabde',
+        ai: true,
       },
     ],
   },

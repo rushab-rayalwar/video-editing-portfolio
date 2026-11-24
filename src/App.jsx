@@ -3,7 +3,8 @@ import { useCallback, useState } from 'react'
 import TopLinks from './components/TopLinks/TopLinks.jsx'
 import Hero from './components/Hero.jsx'
 import WorkSection from './components/Work/WorkSection.jsx'
-import PlaceholderSection from './components/PlaceholderSection.jsx'
+import About from './components/About/About.jsx'
+import Contact from './components/Contact/Contact.jsx'
 import VideoModal from './components/VideoModal/VideoModal.jsx'
 import Timeline from './components/Timeline.jsx'
 import { sections } from './data/sections.js'
@@ -25,8 +26,8 @@ function App() {
           <WorkSection key={category.id} category={category} index={i + 1} onPlay={setPlaying} />
         ))}
 
-        <PlaceholderSection id="about" label="About" index={categories.length + 1} />
-        <PlaceholderSection id="contact" label="Contact" index={categories.length + 2} />
+        <About index={categories.length + 1} />
+        <Contact index={categories.length + 2} />
       </main>
 
       <Timeline sections={sections} />
