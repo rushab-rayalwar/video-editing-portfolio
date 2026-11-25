@@ -13,8 +13,9 @@
   border: 1px solid rgba(245, 245, 247, 0.1);
   border-radius: 999px;
   background: rgba(28, 28, 31, 0.8);
-  backdrop-filter: blur(24px) saturate(1.6);
   -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  /* the standard property must come last, or the production build drops it */
+  backdrop-filter: blur(24px) saturate(1.6);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
   color: var(--text);
   font: 500 13px/1 var(--font-body);

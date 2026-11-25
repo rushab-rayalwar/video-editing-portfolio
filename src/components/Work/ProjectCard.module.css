@@ -288,8 +288,9 @@
   border-radius: 50%;
   border: 1px solid rgba(245, 245, 247, 0.18);
   background: rgba(20, 20, 22, 0.45);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  /* the standard property must come last, or the production build drops it */
+  backdrop-filter: blur(12px);
   color: var(--text);
   transition: transform 0.4s var(--ease-out), background-color 0.3s ease, color 0.3s ease;
 }
@@ -332,8 +333,9 @@
   border-radius: 999px;
   border: 1px solid rgba(var(--tag-tone), 0.38);
   background: rgba(40, 33, 22, 0.62);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  /* the standard property must come last, or the production build drops it */
+  backdrop-filter: blur(12px);
   font-size: 12px;
   font-weight: 500;
   color: rgb(var(--tag-tone));
@@ -379,8 +381,9 @@
   border: 1px solid rgba(var(--tag-tone), 0.24);
   /* dark enough to stay readable over bright thumbnails */
   background: rgba(20, 20, 22, 0.5);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  /* the standard property must come last, or the production build drops it */
+  backdrop-filter: blur(12px);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;

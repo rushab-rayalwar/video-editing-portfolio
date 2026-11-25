@@ -6,8 +6,9 @@
   place-items: center;
   padding: 72px var(--gutter) 32px;
   background: rgba(10, 10, 11, 0.86);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  /* the standard property must come last, or the production build drops it */
+  backdrop-filter: blur(20px);
   animation: fadeIn 0.35s ease both;
 }
 
