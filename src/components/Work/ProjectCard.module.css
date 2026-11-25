@@ -442,6 +442,7 @@
 }
 
 .title,
+.client,
 .meta {
   opacity: 0;
   transform: translateY(10px);
@@ -460,6 +461,15 @@
   transition-delay: calc(var(--reveal-delay, 0ms) + var(--caption-start));
 }
 
+/* Client name: a quiet italic line between the title and the credits */
+.client {
+  margin: 1px 0 0;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-soft);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--caption-start) + 0.08s);
+}
+
 .meta {
   margin: 0;
   font-size: 14px;
@@ -468,6 +478,7 @@
 }
 
 .captionShown .title,
+.captionShown .client,
 .captionShown .meta {
   opacity: 1;
   transform: none;
@@ -476,6 +487,10 @@
 /* Thumbnail was already loaded when the title came into view: no wait, just the row's stagger */
 .captionInstant .title {
   transition-delay: var(--reveal-delay, 0ms);
+}
+
+.captionInstant .client {
+  transition-delay: calc(var(--reveal-delay, 0ms) + 0.08s);
 }
 
 .captionInstant .meta {

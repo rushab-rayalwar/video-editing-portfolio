@@ -59,6 +59,11 @@
   transition-delay: 0.1s;
 }
 
+/* Holds the headline, email and buttons, so the arrow can be drawn across them */
+.pitch {
+  position: relative;
+}
+
 /* ---------- Closing line ---------- */
 .headline {
   max-width: 16ch;
@@ -72,6 +77,14 @@
   text-wrap: balance;
 }
 
+/* "cut" in crimson, with the same glow as in the hero */
+.accent {
+  color: var(--accent);
+  text-shadow:
+    0 0 12px rgba(229, 72, 77, 0.35),
+    0 0 30px rgba(229, 72, 77, 0.12);
+}
+
 .subline {
   margin: clamp(28px, 4vw, 48px) 0 0;
   font-size: clamp(16px, 1.3vw, 18px);
@@ -80,81 +93,107 @@
 
 /* ---------- Email and buttons ---------- */
 .actions {
-  display: grid;
-  justify-items: start;
-  gap: 20px;
+  /* shrink-wraps to the wider box, and both boxes stretch to that same width */
+  display: inline-grid;
+  justify-items: stretch;
+  gap: 10px;
+  max-width: 100%;
   margin-top: 6px;
 }
 
-/* The email: big, white, and it glows softly on hover (like the top links) */
-.email {
+/* Email and WhatsApp: big and white, in rounded boxes so they clearly read as buttons */
+.box {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.42em 0.62em 0.42em 0.62em;
+  border-radius: 18px;
+  border: 1px solid rgba(245, 245, 247, 0.18);
+  background: rgba(245, 245, 247, 0.04);
   font-family: var(--font-display);
-  font-size: clamp(22px, 2.6vw, 36px);
+  /* shrinks a little on very narrow phones so the email stays on one line */
+  font-size: min(clamp(20px, 2.4vw, 34px), 4.9vw);
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text);
   text-decoration: none;
-  overflow-wrap: anywhere;
-  text-shadow: 0 0 0 rgba(245, 245, 247, 0);
-  transition: text-shadow 0.35s ease;
-}
-
-.email:hover,
-.email:focus-visible {
-  text-shadow:
-    0 0 12px rgba(245, 245, 247, 0.4),
-    0 0 28px rgba(245, 245, 247, 0.15);
-}
-
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-/* Frosted pills, like the tags and the "See my work" hint */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px 9px 13px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: rgba(245, 245, 247, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: var(--text-soft);
-  font: 500 14px var(--font-body);
-  text-decoration: none;
-  cursor: pointer;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.35s ease;
 }
 
-.pill svg {
-  width: 15px;
-  height: 15px;
+.boxText {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* mail / chat icon at the start of each box */
+.boxIcon {
   flex-shrink: 0;
+  width: 0.72em;
+  height: 0.72em;
+  margin-right: 0.1em;
+  color: var(--text-soft);
+  transition: color 0.25s ease;
 }
 
-.pill:hover,
-.pill:focus-visible {
-  color: var(--text);
+/* the little up-right arrow at the end: dim until hovered */
+.openIcon {
+  flex-shrink: 0;
+  width: 0.62em;
+  height: 0.62em;
+  margin-left: auto;
+  padding-left: 0.2em;
+  color: var(--text-dim);
+  transition:
+    color 0.25s ease,
+    transform 0.25s var(--ease-out);
+}
+
+.box:hover,
+.box:focus-visible {
+  border-color: rgba(245, 245, 247, 0.4);
   background: rgba(245, 245, 247, 0.08);
-  border-color: rgba(245, 245, 247, 0.22);
+  box-shadow: 0 0 24px rgba(245, 245, 247, 0.08);
+}
+
+.box:hover .boxIcon,
+.box:focus-visible .boxIcon,
+.box:hover .openIcon,
+.box:focus-visible .openIcon {
+  color: var(--text);
+}
+
+.box:hover .openIcon,
+.box:focus-visible .openIcon {
+  transform: translate(2px, -2px);
+}
+
+/* the quiet "or", centred between the two boxes */
+.or {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-dim);
 }
 
 /* ---------- The end of the page ---------- */
 .footer {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px 24px;
+  display: grid;
+  justify-items: start;
+  gap: 10px;
   margin-top: clamp(72px, 12vh, 140px);
   font-size: 13px;
   color: var(--text-dim);
+}
+
+/* "Thank you for making it this far." — a quiet sign-off above the copyright */
+.thanks {
+  margin: 0;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-soft);
 }
 
 @media (prefers-reduced-motion: reduce) {

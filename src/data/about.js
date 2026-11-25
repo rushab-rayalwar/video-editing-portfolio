@@ -1,24 +1,27 @@
 // Everything the About section says. Edit the text here; the layout follows.
 
 export const about = {
-  bio: "I'm a video editor who likes to think in stories. I make ad films (lately a lot of them with generative AI), promos, explainers and long-form edits, and I care about pacing more than effects.",
+  bio: "I edit high-retention reels and motion graphics for brands and creators.",
 
-  services: [
-    'Ad films',
-    'AI ads',
-    'Promos & explainers',
-    'YouTube & long-form edits',
-    'Sound mixing & sound design',
-  ],
+  // Hidden for now: remove the // from the lines below to show "What I can do for you" again.
+  // services: [
+  //   'Ad films',
+  //   'AI ads',
+  //   'Promos & explainers',
+  //   'YouTube & long-form edits',
+  //   'Sound mixing & sound design',
+  // ],
 
-  // Grouped by what each tool is used for
+  // Grouped by what each tool is used for.
+  // icon: sparkle, pen, scissors, aperture or waveform (drawn in components/About/ToolIcon.jsx)
   tools: [
-    { group: 'AI video', items: ['Kling', 'Google Flow'] },
-    { group: 'Script & prompting', items: ['Claude', 'ChatGPT', 'Gemini'] },
-    { group: 'Edit', items: ['Premiere Pro'] },
-    { group: 'Stills', items: ['Photoshop', 'Lightroom'] },
-    { group: 'Sound', items: ['FL Studio'] },
+    { group: 'AI video', icon: 'sparkle', items: ['Kling', 'Google Flow', 'invideo'] },
+    { group: 'Script & prompting', icon: 'pen', items: ['Claude', 'ChatGPT', 'Gemini'] },
+    { group: 'Edit', icon: 'scissors', items: ['Premiere Pro', 'After Effects'] },
+    { group: 'Stills', icon: 'aperture', items: ['Photoshop', 'Lightroom'] },
+    { group: 'Sound', icon: 'waveform', items: ['FL Studio'] },
   ],
 
-  signoff: "When I'm not editing, I'm studying films and experimenting with sound.",
+  // A quiet italic line at the end of the section; '' hides it
+  signoff: '',
 }

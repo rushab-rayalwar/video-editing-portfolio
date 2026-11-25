@@ -12,73 +12,82 @@
 //   vimeo        Vimeo link, or '' for now
 //   tag          optional small label, e.g. 'In progress' or 'Mature themes'
 //   tagNote      optional explanation, shown in a small box when someone hovers the tag
+//   client       optional client name, shown in italics above the meta line
 //   ai           true if it was made with generative AI; shows a small "AI" badge
 
 export const categories = [
   {
     id: 'ai-films',
     title: 'AI Ad Films',
-    description: 'Brand stories written, directed and edited with generative AI.',
+    description: 'Brand stories told with generative AI.',
     projects: [
       {
         title: 'Weight Loss Without Guidance',
-        meta: 'Aiqa · Reel · Direction, edit',
+        client: 'Aiqa',
+        meta: 'Direction · AI generation · Editing',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248314092?h=5f19195c20',
         ai: true,
       },
       {
         title: 'Scale Sirf Number Batata Hai',
-        meta: 'Aiqa · Reel · Direction, edit',
+        client: 'Aiqa',
+        meta: 'Direction · AI generation · Editing',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248424351?h=b8dd96406b',
         ai: true,
       },
       {
-        title: 'Monster Advisor',
-        meta: 'Aiqa · Reel · Direction, edit',
+        title: 'Random Weight Loss Advice',
+        client: 'Aiqa',
+        meta: 'Direction · AI generation · Editing',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248422488?h=075c51be06',
         ai: true,
       },
-      {
-        title: 'Pidilite: Adhesive vs. Water',
-        meta: 'Ad film · Direction, edit, continuity',
-        orientation: 'landscape',
-        vimeo: 'https://player.vimeo.com/video/1248427219?h=1c695930bc',
-        ai: true,
-        tag: 'In progress',
-        tagNote: 'This film is still being made. What you see is a work-in-progress cut.',
-      },
+      // Pidilite taken out (unfinished, unreleased client work). Remove the // from the 9 lines below to bring it back.
+      // {
+      //   title: 'Pidilite: Adhesive vs. Water',
+      //   meta: 'Ad film · Direction, edit, continuity',
+      //   orientation: 'landscape',
+      //   vimeo: 'https://player.vimeo.com/video/1248427219?h=1c695930bc',
+      //   ai: true,
+      //   tag: 'In progress',
+      //   tagNote: 'This film is still being made. What you see is a work-in-progress cut.',
+      // },
     ],
   },
   {
     id: 'ads',
     title: 'Promo & Explainer Ads',
-    description: 'Short, sharp ads that sell, explain and stick.',
+    description: 'Short, sharp ads.',
     projects: [
       {
         title: 'Guitar Lessons with Rohan',
-        meta: 'Reel · Edit, grade',
+        client: 'Rohan Guitar Tutor',
+        meta: 'Direction · Color grade · Editing',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248427221?h=9ee2b1afa0',
       },
-      {
-        title: 'Career Domain',
-        meta: 'Reel · Edit, grade, motion graphics',
-        orientation: 'portrait',
-        vimeo: 'https://player.vimeo.com/video/1248715452?h=237fe90564',
-      },
+      // TRIAL: Career Domain taken out. Remove the // from the 6 lines below to bring it back.
+      // {
+      //   title: 'Career Domain',
+      //   meta: 'Reel · Edit, grade, motion graphics',
+      //   orientation: 'portrait',
+      //   vimeo: 'https://player.vimeo.com/video/1248715452?h=237fe90564',
+      // },
       {
         title: 'Unsolicited Advice',
-        meta: 'Aiqa · Reel · Motion graphics',
+        client: 'Aiqa',
+        meta: 'AI generation · Motion graphics · Editing',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248823342?h=22ec932d39',
         ai: true,
       },
       {
-        title: 'Obesity Crisis',
-        meta: 'Aiqa · Reel · Motion graphics',
+        title: 'Obesity Crisis in India',
+        client: 'Aiqa',
+        meta: 'AI generation · Motion graphics · Editing',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248317095?h=6ea19fabde',
         ai: true,
@@ -87,23 +96,25 @@ export const categories = [
   },
   {
     id: 'long-form',
-    title: 'YouTube & Long-form',
-    description: 'Long-form edits that keep people watching to the end.',
+    title: 'YouTube',
+    description: 'Edits that keep people watching to the end.',
     projects: [
       {
         title: 'Workout Summary',
-        meta: 'YouTube · Edit, pacing',
+        client: 'Aiqa',
+        meta: 'Color grade · Pacing · Editing',
         orientation: 'landscape',
         vimeo: 'https://player.vimeo.com/video/1248732449?h=2a9c72f2d7',
       },
-      {
-        title: "Amsterdam's Red Light District",
-        meta: 'Travel vlog · Edit, storytelling',
-        orientation: 'landscape',
-        vimeo: 'https://player.vimeo.com/video/1248427218?h=97a75ee969',
-        tag: 'Mature themes',
-        tagNote: "A travel vlog through Amsterdam's red-light district. No nudity, but adult themes and signage.",
-      },
+      // Amsterdam taken out (kept as a private link for travel/YouTube clients). Remove the // from the 8 lines below to bring it back.
+      // {
+      //   title: "Amsterdam's Red Light District",
+      //   meta: 'Travel vlog · Edit, storytelling',
+      //   orientation: 'landscape',
+      //   vimeo: 'https://player.vimeo.com/video/1248427218?h=97a75ee969',
+      //   tag: 'Mature themes',
+      //   tagNote: "A travel vlog through Amsterdam's red-light district. Adult themes and signage.",
+      // },
     ],
   },
   {

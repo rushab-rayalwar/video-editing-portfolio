@@ -4,6 +4,7 @@
 
 export const contact = {
   headline: 'Got something to cut?',
+  headlineAccent: 'cut', // this word turns crimson, like "cut." in the hero; '' for none
   subline: 'Send me an email.',
 
   email: 'rushabrayalwar@gmail.com',
@@ -12,4 +13,7 @@ export const contact = {
   // It's only used inside the link; it never shows as text on the page.
   whatsapp: '918766022565',
   whatsappMessage: "Hi Rushab, I saw your portfolio and I'd like to talk about a project.",
+
+  // A last quiet line at the very bottom of the page, above the copyright
+  thanks: 'Thank you for making it this far :)',
 }

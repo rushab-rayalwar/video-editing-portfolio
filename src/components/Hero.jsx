@@ -6,7 +6,7 @@ function Hero() {
   return (
     <section id="intro" className={`container ${styles.hero}`} aria-labelledby="hero-title">
       <div className={styles.copy}>
-        <p className={styles.eyebrow}>Video editor · Photographer · Sound</p>
+        <p className={styles.eyebrow}>Video editing · AI ad films · Sound mixing</p>
 
         <h1 id="hero-title" className={styles.title}>
           <span className={`${styles.line} ${styles.lineName}`}>Hey, I&rsquo;m Rushab.</span>

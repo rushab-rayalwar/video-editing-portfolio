@@ -172,6 +172,7 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
       <h3 ref={titleRef} className={styles.title}>
         {project.title}
       </h3>
+      {project.client && <p className={styles.client}>{project.client}</p>}
       <p className={styles.meta}>{project.meta}</p>
     </div>
   )
