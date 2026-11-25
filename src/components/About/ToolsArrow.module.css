@@ -1,0 +1,27 @@
+/* "Tools I use", written partway along the crimson arrow */
+.label {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  fill: var(--accent);
+  /* a thick outline in the page colour hides the line behind the words, so the arrow looks broken around them */
+  stroke: var(--bg);
+  stroke-width: 14px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+  opacity: 0;
+}
+
+/* the words appear as the line is drawn past them */
+.drawn .label {
+  opacity: 1;
+  transition: opacity 0.45s ease 1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawn .label {
+    transition: none;
+  }
+}

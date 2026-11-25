@@ -1,7 +1,7 @@
 // Everything the About section says. Edit the text here; the layout follows.
 
 export const about = {
-  bio: "I edit high-retention reels and motion graphics for brands and creators.",
+  bio: "I make high-retention reels and motion graphics for brands and creators.",
 
   // Hidden for now: remove the // from the lines below to show "What I can do for you" again.
   // services: [

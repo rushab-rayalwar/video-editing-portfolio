@@ -23,8 +23,8 @@
   cursor: pointer;
   pointer-events: auto;
   transform: translateX(-50%);
-  /* a slow fade that also sharpens from a blur (was 0.7s, no blur) */
-  animation: hintIn 1.8s ease-in-out both;
+  /* a quick fade that sharpens from a light blur (was 1.8s with a 10px blur) */
+  animation: hintIn 0.9s ease-in-out both;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -61,7 +61,7 @@
 @keyframes hintIn {
   from {
     opacity: 0;
-    filter: blur(10px);
+    filter: blur(4px);
     transform: translateX(-50%) translateY(10px);
   }
   to {

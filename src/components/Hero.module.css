@@ -39,7 +39,8 @@
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(40px, 4.8vw, 76px);
+  /* was clamp(40px, 4.8vw, 76px) */
+  font-size: clamp(34px, 4.2vw, 64px);
   line-height: 1;
   letter-spacing: -0.045em;
 }
@@ -140,10 +141,27 @@
 
 /* ---------- Phones and small tablets ---------- */
 @media (max-width: 860px) {
+  /* "Hey, I'm Rushab." a little bigger on phones (it's 0.5 of the headline elsewhere) */
+  .lineName {
+    font-size: 0.62em;
+  }
+
+  /* a little air between "I know when to cut." and "And when not to." */
+  .linePunch {
+    margin-top: 0.12em;
+  }
+
+  /* smaller and slightly tighter, so the line stays on one row on phones */
+  .eyebrow {
+    font-size: min(11px, 2.9vw);
+    letter-spacing: 0.1em;
+  }
+
   .hero {
     grid-template-columns: 1fr;
     min-height: auto;
-    padding-top: 24px;
+    /* was 24px: room for "What I do" and "Contact" above the photo */
+    padding-top: 60px;
     gap: 8px;
   }
 

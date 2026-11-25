@@ -5,7 +5,8 @@ import { useInView } from '../../hooks/useInView.js'
 import { about } from '../../data/about.js'
 import styles from './About.module.css'
 
-// About: a short statement, the tools I use (plus, optionally, what I do), and a quiet sign-off line.
+// "What I do": a short statement, the tools I use, and (optionally) a sign-off line.
+// The section keeps the id "about" so the links and the timeline still find it.
 function About({ index }) {
   // Same heading behaviour as the work categories: number, then heading, once fully in view
   const [headingRef, headingVisible] = useInView({ threshold: 1, clearOfTimeline: true })
@@ -17,7 +18,7 @@ function About({ index }) {
         <span className={styles.index}>{String(index).padStart(2, '0')}</span>
         <h2 ref={headingRef} id="about-title" className={styles.title}>
           <RecDot />
-          <span className={styles.titleText}>About</span>
+          <span className={styles.titleText}>What I do</span>
         </h2>
       </header>
 
@@ -41,7 +42,7 @@ function About({ index }) {
           )}
 
           <Reveal className={styles.block} delay={hasServices ? 0.12 : 0}>
-            <h3 className={styles.label}>Tools</h3>
+            <h3 className={styles.toolsTitle}>Tools I use</h3>
             <dl className={styles.tools}>
               {about.tools.map(({ group, icon, items }) => (
                 <div key={group} className={styles.toolRow}>

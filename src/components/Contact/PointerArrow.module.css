@@ -11,12 +11,13 @@
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 4px rgba(229, 72, 77, 0.35));
 }
 
 /* Starts undrawn: the dash hides the whole line, then slides away to "draw" it */
 .line,
 .head {
+  /* soft crimson glow on the line itself (not on any label written along it) */
+  filter: drop-shadow(0 0 4px rgba(229, 72, 77, 0.35));
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
 }

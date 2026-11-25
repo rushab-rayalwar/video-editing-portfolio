@@ -5,7 +5,7 @@ export const sections = [
   { id: 'ai-films', label: 'AI Ads' },
   { id: 'ads', label: 'Promos' },
   { id: 'long-form', label: 'YouTube' },
-  { id: 'stories', label: 'Stories' },
-  { id: 'about', label: 'About' },
+  { id: 'stories', label: 'Personal' },
+  { id: 'about', label: 'What I do' },
   { id: 'contact', label: 'Contact' },
 ]

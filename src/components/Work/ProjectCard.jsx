@@ -39,8 +39,9 @@ function PlayIcon() {
  * Hovering a playable card lights up a soft glow made from a blurred copy of its thumbnail.
  *
  * `revealOrder` is the card's position in its row, used to stagger the cascade.
+ * `row` (phones only): when the row itself is on screen, so the whole row reveals together.
  */
-function ProjectCard({ project, onPlay, revealOrder = 0 }) {
+function ProjectCard({ project, onPlay, revealOrder = 0, row = null }) {
   const video = parseVimeo(project.vimeo)
   const isPortrait = project.orientation !== 'landscape'
 
@@ -67,7 +68,10 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
 
   const poster = project.poster || vimeoPoster
 
-  const [cardRef, inView] = useInView()
+  const [cardRef, cardInView] = useInView()
+  // In a phone's sideways-swipe row, the whole row reveals together (cards off to the
+  // right included), instead of each card waiting until it's swiped into view
+  const inView = cardInView || Boolean(row?.inView)
 
   // If the thumbnail is slow or missing, show the card anyway after a short wait
   useEffect(() => {
@@ -89,7 +93,10 @@ function ProjectCard({ project, onPlay, revealOrder = 0 }) {
   //   - thumbnail already loaded when the title comes into view: straight away
   //   - title in view first: 0.5s after the thumbnail loads (or the fallback gives up)
   // so a fast scroll never leaves names lagging behind.
-  const [titleRef, titleVisible, titleSeenAt] = useInView({ threshold: 1, clearOfTimeline: true })
+  const [titleRef, ownTitleVisible, ownTitleSeenAt] = useInView({ threshold: 1, clearOfTimeline: true })
+  // in a phone row, the captions follow the row rather than each card's own title
+  const titleVisible = row ? row.captions : ownTitleVisible
+  const titleSeenAt = row ? row.captionsAt : ownTitleSeenAt
   const thumbnailReady = posterLoaded || timedOut || !video
   const captionShown = titleVisible && thumbnailReady
   const thumbnailReadyAt = video ? readyAt : 0

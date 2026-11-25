@@ -18,6 +18,7 @@
 
 /* Plain white text that glows softly on hover */
 .link {
+  position: relative;
   pointer-events: auto;
   padding: 6px 0;
   color: var(--text);
@@ -36,6 +37,37 @@
     0 0 22px rgba(245, 245, 247, 0.18);
 }
 
+/*
+ * TRIAL: a small red "recording" dot lights up just before the link on hover,
+ * like a camera's record light. It sits outside the text, so nothing shifts.
+ * Delete this rule and the two below it to go back to the glow only.
+ */
+.link::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -13px;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 6px 1px var(--accent-glow),
+    0 0 14px 2px rgba(229, 72, 77, 0.25);
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s var(--ease-out);
+}
+
+.link:hover::before,
+.link:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
 @keyframes linksIn {
   from {
     opacity: 0;
@@ -44,6 +76,11 @@
 }
 
 @media (max-width: 720px) {
+  /* sit a little higher on phones, clear of the photo */
+  .topLinks {
+    top: max(14px, env(safe-area-inset-top, 0px));
+  }
+
   .inner {
     gap: 22px;
   }

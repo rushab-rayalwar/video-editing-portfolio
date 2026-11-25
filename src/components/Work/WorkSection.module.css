@@ -75,6 +75,10 @@
 .titleText {
   display: block;
   min-width: 0;
+  /* TRIAL: a soft white glow, like "I know when to cut." in the hero. Delete these lines to remove it */
+  text-shadow:
+    0 0 24px rgba(245, 245, 247, 0.16),
+    0 0 48px rgba(245, 245, 247, 0.06);
 }
 
 .index,

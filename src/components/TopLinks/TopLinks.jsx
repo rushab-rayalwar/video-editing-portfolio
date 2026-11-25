@@ -1,7 +1,7 @@
 import styles from './TopLinks.module.css'
 
 const links = [
-  { label: 'About Me', target: 'about' },
+  { label: 'What I do', target: 'about' },
   { label: 'Contact', target: 'contact' },
 ]
 
@@ -15,7 +15,7 @@ function TopLinks() {
   }
 
   return (
-    <nav className={styles.topLinks} aria-label="About and contact">
+    <nav className={styles.topLinks} aria-label="What I do and contact">
       <div className={`container ${styles.inner}`}>
         {links.map((link) => (
           <a key={link.target} href={`#${link.target}`} className={styles.link} onClick={(e) => goTo(e, link.target)}>

@@ -97,7 +97,7 @@ export const categories = [
   {
     id: 'long-form',
     title: 'YouTube',
-    description: 'Edits that keep people watching to the end.',
+    description: 'Paced with precision.',
     projects: [
       {
         title: 'Workout Summary',
@@ -119,12 +119,18 @@ export const categories = [
   },
   {
     id: 'stories',
-    title: 'Stories & Personal Work',
-    description: 'Things I made because I wanted to.',
+    title: 'Personal Work',
+    description: 'Passion projects.',
     projects: [
       {
+        title: 'Ramayana Movie Review',
+        meta: 'Script · Color grade · Editing',
+        orientation: 'portrait',
+        vimeo: 'https://player.vimeo.com/video/1246291735?h=e61286c5d0',
+      },
+      {
         title: 'Yellow (Guitar Cover)',
-        meta: 'Music · Script, edit, mix',
+        meta: 'Script · Direction · Sound mixing · Editing',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248427220?h=db127832c0',
       },
@@ -133,12 +139,6 @@ export const categories = [
         meta: 'Shot and edited in a single day',
         orientation: 'portrait',
         vimeo: 'https://player.vimeo.com/video/1248720695?h=3ed391d186',
-      },
-      {
-        title: 'Ramayana Movie Review',
-        meta: 'On camera · Edit, grade',
-        orientation: 'portrait',
-        vimeo: 'https://player.vimeo.com/video/1246291735?h=e61286c5d0',
       },
     ],
   },

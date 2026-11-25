@@ -35,6 +35,10 @@
 
 .titleText {
   display: block;
+  /* soft white glow, matching the work category titles */
+  text-shadow:
+    0 0 24px rgba(245, 245, 247, 0.16),
+    0 0 48px rgba(245, 245, 247, 0.06);
 }
 
 .index,
