@@ -194,3 +194,12 @@
     scroll-snap-align: start;
   }
 }
+
+/* Phones: an even lighter starting blur, cheaper to animate */
+@media (max-width: 640px) {
+  .index,
+  .titleText,
+  .description {
+    filter: blur(2px);
+  }
+}
