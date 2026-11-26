@@ -40,8 +40,10 @@ function PlayIcon() {
  *
  * `revealOrder` is the card's position in its row, used to stagger the cascade.
  * `row` (phones only): when the row itself is on screen, so the whole row reveals together.
+ * `phone`: on phones, the title and credits follow the card's own reveal instead of
+ *   waiting for the title to be fully on screen.
  */
-function ProjectCard({ project, onPlay, revealOrder = 0, row = null }) {
+function ProjectCard({ project, onPlay, revealOrder = 0, row = null, phone = false }) {
   const video = parseVimeo(project.vimeo)
   const isPortrait = project.orientation !== 'landscape'
 
@@ -94,9 +96,10 @@ function ProjectCard({ project, onPlay, revealOrder = 0, row = null }) {
   //   - title in view first: 0.5s after the thumbnail loads (or the fallback gives up)
   // so a fast scroll never leaves names lagging behind.
   const [titleRef, ownTitleVisible, ownTitleSeenAt] = useInView({ threshold: 1, clearOfTimeline: true })
-  // in a phone row, the captions follow the row rather than each card's own title
-  const titleVisible = row ? row.captions : ownTitleVisible
-  const titleSeenAt = row ? row.captionsAt : ownTitleSeenAt
+  // Phones: the title and credits come in right behind the card's own reveal (0.5s after
+  // its thumbnail, with the same stagger), without waiting for the text to be on screen
+  const titleVisible = phone ? inView : ownTitleVisible
+  const titleSeenAt = phone ? null : ownTitleSeenAt
   const thumbnailReady = posterLoaded || timedOut || !video
   const captionShown = titleVisible && thumbnailReady
   const thumbnailReadyAt = video ? readyAt : 0

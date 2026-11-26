@@ -29,12 +29,11 @@ function WorkSection({ category, index, onPlay }) {
   // heading is on screen and clear of the timeline dock. Happens once.
   const [headingRef, headingVisible] = useInView({ threshold: 1, clearOfTimeline: true })
 
-  // Phones: the row of reels reveals as a whole (thumbnails once a third of the row is
-  // on screen, captions once nearly all of it is), with the usual stagger
+  // Phones: the row of reels reveals as a whole once a third of it is on screen,
+  // with the usual stagger; each card's caption follows its own reveal
   const isPhone = useIsPhone()
   const [rowRef, rowInView] = useInView({ threshold: 0.3 })
-  const [rowCaptionsRef, rowCaptions, rowCaptionsAt] = useInView({ threshold: 0.85, clearOfTimeline: true })
-  const row = isPhone ? { inView: rowInView, captions: rowCaptions, captionsAt: rowCaptionsAt } : null
+  const row = isPhone ? { inView: rowInView } : null
 
   return (
     <section
@@ -54,10 +53,7 @@ function WorkSection({ category, index, onPlay }) {
 
       {portrait.length > 0 && (
         <ul
-          ref={(el) => {
-            rowRef.current = el
-            rowCaptionsRef.current = el
-          }}
+          ref={rowRef}
           // TRIAL: rows of three reels fill the width, so the reels are taller
           className={`${styles.reels} ${portrait.length === 3 ? styles.reelsThree : ''}`}
           style={{
@@ -68,7 +64,7 @@ function WorkSection({ category, index, onPlay }) {
         >
           {portrait.map((project, i) => (
             <li key={project.title}>
-              <ProjectCard project={project} onPlay={onPlay} revealOrder={i} row={row} />
+              <ProjectCard project={project} onPlay={onPlay} revealOrder={i} row={row} phone={isPhone} />
             </li>
           ))}
         </ul>
@@ -82,7 +78,7 @@ function WorkSection({ category, index, onPlay }) {
         >
           {landscape.map((project, i) => (
             <li key={project.title}>
-              <ProjectCard project={project} onPlay={onPlay} revealOrder={i} />
+              <ProjectCard project={project} onPlay={onPlay} revealOrder={i} phone={isPhone} />
             </li>
           ))}
         </ul>

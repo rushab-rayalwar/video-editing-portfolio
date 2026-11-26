@@ -89,7 +89,7 @@ export const categories = [
         client: 'Aiqa',
         meta: 'AI generation · Motion graphics · Editing',
         orientation: 'portrait',
-        vimeo: 'https://player.vimeo.com/video/1248317095?h=6ea19fabde',
+        vimeo: 'https://player.vimeo.com/video/1250327386?h=de065e01cd',
         ai: true,
       },
     ],
