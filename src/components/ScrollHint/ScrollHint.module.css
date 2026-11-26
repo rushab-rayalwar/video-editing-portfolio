@@ -104,19 +104,3 @@
     opacity: 0;
   }
 }
-
-/* Phones: an even lighter starting blur, cheaper to animate */
-@media (max-width: 640px) {
-  @keyframes hintIn {
-    from {
-      opacity: 0;
-      filter: blur(2px);
-      transform: translateX(-50%) translateY(10px);
-    }
-    to {
-      opacity: 1;
-      filter: blur(0);
-      transform: translateX(-50%);
-    }
-  }
-}

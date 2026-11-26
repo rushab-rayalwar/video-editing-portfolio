@@ -23,10 +23,3 @@
     transition-delay: 0s !important;
   }
 }
-
-/* Phones: an even lighter starting blur, cheaper to animate */
-@media (max-width: 640px) {
-  .reveal:not(.revealed) {
-    filter: blur(3px);
-  }
-}

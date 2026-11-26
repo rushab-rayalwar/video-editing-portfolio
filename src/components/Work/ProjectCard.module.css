@@ -81,8 +81,7 @@
 /* Phones: a much lighter blur (and a smaller zoom), which is far cheaper for a phone to animate */
 @media (max-width: 640px) {
   .frame {
-    /* was 4px */
-    filter: blur(2px);
+    filter: blur(4px);
     transform: scale(1.03);
   }
 }
